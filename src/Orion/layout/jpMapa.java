@@ -37,7 +37,7 @@ public final class jpMapa extends JPanel implements MouseListener,Runnable
         loadMap();
         repaint();
         addMouseListener(this);
-        deathstar = new Plane(40,40,"/Users/rafael/Projects/Netbeans/Grafos/src/res/deathstar.jpg");
+        deathstar = new Plane(40,40,"./src/res/deathstar.jpg");
         thread = new Thread(this);
         thread.start();
         
@@ -46,7 +46,7 @@ public final class jpMapa extends JPanel implements MouseListener,Runnable
     public void loadMap()
     {
         int w,h ;
-        String src = "/Users/rafael/Projects/Netbeans/Grafos/src/res/mapa.png";
+        String src = "./src/res/mapa.png";
         
         try {
             mapa = ImageIO.read(new File(src));            
