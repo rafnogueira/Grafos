@@ -30,6 +30,9 @@ public final class jpMapa extends JPanel implements MouseListener,Runnable
     private Plane deathstar = null;
     private Thread thread = null;
     private boolean isMoving;
+    private final String objTexture = "./src/res/deathstar.jpg";
+    private final String mapTexture = "./src/res/mapa.png";
+    
     
     public jpMapa() {
     
@@ -37,7 +40,7 @@ public final class jpMapa extends JPanel implements MouseListener,Runnable
         loadMap();
         repaint();
         addMouseListener(this);
-        deathstar = new Plane(40,40,"./src/res/deathstar.jpg");
+        deathstar = new Plane(40,40,objTexture);
         thread = new Thread(this);
         thread.start();
         
@@ -45,11 +48,9 @@ public final class jpMapa extends JPanel implements MouseListener,Runnable
     
     public void loadMap()
     {
-        int w,h ;
-        String src = "./src/res/mapa.png";
         
         try {
-            mapa = ImageIO.read(new File(src));            
+            mapa = ImageIO.read(new File(mapTexture));            
         } catch (IOException ex) {
             Logger.getLogger(Grafos.class.getName()).log(Level.SEVERE, null, ex);
         }
