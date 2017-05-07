@@ -1,3 +1,7 @@
+package Orion;
+
+
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -113,7 +117,8 @@ public class Dijkstra2 {
 		Vertex[] vertices = { v0, v1, v2, v3, v4 };
 		printGraph(vertices);
 		computePaths(v1);
-		for (Vertex v : vertices) {
+		for (Vertex v : vertices) 
+                {
 			System.out.println("\nDistancia de " + v + ": " + v.minDistance);
 			List<Vertex> path = getShortestPathTo(v);
 			System.out.println("Path: " + path);
