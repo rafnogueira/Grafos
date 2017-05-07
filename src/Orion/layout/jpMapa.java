@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -33,26 +34,28 @@ public final class jpMapa extends JPanel implements MouseListener,Runnable
     private final String objTexture = "./src/res/deathstar.jpg";
     private final String mapTexture = "./src/res/mapa.png";
     
-    
+
     public jpMapa() {
-    
+        deathstar = new Plane(40,40,objTexture);
+        deathstar.setPosition(Plane.Pontos.RJO.ordinal());
+
         isMoving = false;
         loadMap();
         repaint();
         addMouseListener(this);
-        deathstar = new Plane(40,40,objTexture);
         thread = new Thread(this);
         thread.start();
         
+        
     }
-    
+       
     public void loadMap()
     {
         
         try {
             mapa = ImageIO.read(new File(mapTexture));            
         } catch (IOException ex) {
-            Logger.getLogger(Grafos.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(Grafos.class.getName()).log(Level.SEVERE, null, ex);
         }
         if(mapa == null)
         {
@@ -83,11 +86,13 @@ public final class jpMapa extends JPanel implements MouseListener,Runnable
        
     }
 
+
     @Override
     public void mousePressed(MouseEvent e)
     {
-        
-        deathstar.setDestination(e.getX(), e.getY());      
+
+        //Se o mouse for clicado irá ir para o ponto de teste
+        deathstar.setDestination(Plane.Pontos.MAN.ordinal());
         deathstar.setIsMoving(true);
    
         repaint();
