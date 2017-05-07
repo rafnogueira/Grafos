@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -30,7 +29,7 @@ public final class jpMapa extends JPanel implements MouseListener,Runnable
     //private Plane deathstar = null;
     private Plane deathstar = null;
     private Thread thread = null;
-    private boolean isMoving;
+    private final boolean isMoving;
     private final String objTexture = "./src/res/deathstar.jpg";
     private final String mapTexture = "./src/res/mapa.png";
     
