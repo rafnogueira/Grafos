@@ -39,7 +39,7 @@ public final class jpMapa extends JPanel implements MouseListener,Runnable
 
     public jpMapa() {
         deathstar = new Plane(40,40,objTexture);
-        deathstar.setPosition(Plane.Pontos.CPG.ordinal());
+        deathstar.setPosition(Plane.Pontos.CUI.ordinal());
 
         isMoving = false;
         loadMap();
@@ -84,7 +84,7 @@ public final class jpMapa extends JPanel implements MouseListener,Runnable
                 Graphics2D g2d =  (Graphics2D) g;
                 g2d.setStroke(new BasicStroke(5));
                 g2d.setColor(Color.MAGENTA);
-                g2d.draw(new Line2D.Float(deathstar.getPosX(), deathstar.getPosY(), deathstar.getDstX(), deathstar.getDstY()));
+                g2d.draw(new Line2D.Float(deathstar.getPosX() + deathstar.getWidth()/2, deathstar.getPosY() + deathstar.getHeight()/2, deathstar.getDstX(), deathstar.getDstY()));
               
             }
         }
@@ -100,9 +100,9 @@ public final class jpMapa extends JPanel implements MouseListener,Runnable
     @Override
     public void mousePressed(MouseEvent e)
     {
-
+        JOptionPane.showMessageDialog(null, e.getX()  +", "+ e.getY());
         //Se o mouse for clicado irá ir para o ponto de teste
-        deathstar.setDestination(Plane.Pontos.MAN.ordinal());
+        deathstar.setDestination(Plane.Pontos.NTL.ordinal());
         deathstar.setIsMoving(true);
         repaint();
     }
@@ -128,7 +128,7 @@ public final class jpMapa extends JPanel implements MouseListener,Runnable
         while(true)
         {
             try {
-                Thread.sleep(100);
+                Thread.sleep(30);
                 deathstar.Update();
                 repaint();
       

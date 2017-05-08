@@ -34,6 +34,7 @@ public class Plane {
     {315, 313}, {344, 389}, {438, 429}, {461, 412}, {472, 437}, {532, 383}, {408, 441},
     {485, 448}, {537, 438}, {504, 436}, {445, 473}, {434, 494}, {449, 506}, {406, 549},};
 
+//NTL 686, 177
     public enum Pontos {
         MAN, BEL, NTL, REC, SLV, BSB, CUI, CPG, BAU, RBP, CMP, BHO, LON, SPO, RJO, SJC, CUR, BLU, FLO, POA
     };
@@ -79,26 +80,19 @@ public class Plane {
     public void Update() {
 
         if (isMoving) {
-            this.posX += Speed * Math.sin(angle);
-            this.posY += Speed * Math.cos(angle);
+            this.dx = this.dstX - this.posX;
+            this.dy = this.dstY - this.posY;
+            this.angle = (float) Math.atan2(this.dx, this.dy);
 
-            float distancia = (int) Math.sqrt((dstX - posX) * (dstX - posX) + (dstY - posY) * (dstY - posY));
+            this.posX += Speed * Math.sin(this.angle);
+            this.posY += Speed * Math.cos(this.angle);
+
+            float distancia = (int) Math.sqrt((this.dstX - this.posX) * (this.dstX - this.posX) + (this.dstY - this.posY) * (this.dstY - this.posY));
             System.out.println("Distance:" + distancia);
 
-            if (this.dstX < this.posX) {
-
-                if (distancia <= 5) {
-                    this.isMoving = false;
-                }
+            if (distancia <= 5) {
+                this.isMoving = false;
             }
-            if(this.dstX > this.posX)
-            {
-                if(distancia <=40)
-                {
-                    this.isMoving = false;
-                }
-            }
-
         }
     }
 
@@ -106,9 +100,6 @@ public class Plane {
 
         this.dstX = coords[flag][0];
         this.dstY = coords[flag][1];
-        this.dx = dstX - posX;
-        this.dy = dstY - posY;
-        this.angle = (float) Math.atan2(dx, dy);
 
     }
 
@@ -169,8 +160,7 @@ public class Plane {
         this.isMoving = isMoving;
     }
 
-    public boolean isMoving()
-    {
+    public boolean isMoving() {
         return this.isMoving;
     }
 
@@ -181,7 +171,5 @@ public class Plane {
     public int getDstY() {
         return dstY;
     }
-    
-    
-    
+
 }
