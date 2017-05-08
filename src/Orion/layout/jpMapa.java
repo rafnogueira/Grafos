@@ -5,10 +5,13 @@
  */
 package Orion.layout;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -30,13 +33,13 @@ public final class jpMapa extends JPanel implements MouseListener,Runnable
     private Plane deathstar = null;
     private Thread thread = null;
     private final boolean isMoving;
-    private final String objTexture = "./src/res/deathstar.jpg";
+    private final String objTexture = "./src/res/deathstar.png";
     private final String mapTexture = "./src/res/mapa.png";
     
 
     public jpMapa() {
         deathstar = new Plane(40,40,objTexture);
-        deathstar.setPosition(Plane.Pontos.RJO.ordinal());
+        deathstar.setPosition(Plane.Pontos.CPG.ordinal());
 
         isMoving = false;
         loadMap();
@@ -70,12 +73,20 @@ public final class jpMapa extends JPanel implements MouseListener,Runnable
         g.setColor(Color.RED);
         g.drawImage(mapa, 0,0, 700,600, null);
         
-        
         if(deathstar.isloaded())
         {
             g.drawImage(deathstar.getTextura(),deathstar.getPosX(),
                         deathstar.getPosY(), deathstar.getWidth(), 
                         deathstar.getHeight(), this);
+        
+            if(deathstar.isMoving())
+            {
+                Graphics2D g2d =  (Graphics2D) g;
+                g2d.setStroke(new BasicStroke(5));
+                g2d.setColor(Color.MAGENTA);
+                g2d.draw(new Line2D.Float(deathstar.getPosX(), deathstar.getPosY(), deathstar.getDstX(), deathstar.getDstY()));
+              
+            }
         }
         
     }
@@ -93,7 +104,6 @@ public final class jpMapa extends JPanel implements MouseListener,Runnable
         //Se o mouse for clicado irá ir para o ponto de teste
         deathstar.setDestination(Plane.Pontos.MAN.ordinal());
         deathstar.setIsMoving(true);
-   
         repaint();
     }
 
@@ -118,10 +128,9 @@ public final class jpMapa extends JPanel implements MouseListener,Runnable
         while(true)
         {
             try {
-                Thread.sleep(10);
-
-                    deathstar.Update();
-                    repaint();
+                Thread.sleep(100);
+                deathstar.Update();
+                repaint();
       
             } catch (InterruptedException ex) {
                 Logger.getLogger(jpMapa.class.getName()).log(Level.SEVERE, null, ex);

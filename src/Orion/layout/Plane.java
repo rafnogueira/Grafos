@@ -30,48 +30,12 @@ public class Plane {
     private int Speed;
     private boolean isMoving;
 
-    private final int[][] coords = {
-        {247, 154},
-        {457, 106},
-        {685, 177},
-        {697, 219},
-        {630, 288},
-        {461, 326},
-        {315, 313},
-        {344, 389},
-        {438, 429},
-        {461, 412},
-        {472, 437},
-        {532, 383},
-        {408, 441},
-        {485, 448},
-        {537, 438},
-        {504, 436},
-        {445, 473},
-        {434, 494},
-        {449, 506},
-        {406, 549},};
-        public enum Pontos {
-        MAN,
-        BEL,
-        NTL,
-        REC,
-        SLV,
-        BSB,
-        CUT,
-        CPG,
-        BAU,
-        RBP,
-        CMP,
-        BHO,
-        LON,
-        SPO,
-        RJO,
-        SJC,
-        CUR,
-        BLU,
-        FLO,
-        POA
+    private final int[][] coords = {{247, 154}, {457, 106}, {685, 177}, {697, 219}, {630, 288}, {461, 326},
+    {315, 313}, {344, 389}, {438, 429}, {461, 412}, {472, 437}, {532, 383}, {408, 441},
+    {485, 448}, {537, 438}, {504, 436}, {445, 473}, {434, 494}, {449, 506}, {406, 549},};
+
+    public enum Pontos {
+        MAN, BEL, NTL, REC, SLV, BSB, CUI, CPG, BAU, RBP, CMP, BHO, LON, SPO, RJO, SJC, CUR, BLU, FLO, POA
     };
 
     public Plane() {
@@ -87,7 +51,7 @@ public class Plane {
         this.Width = width;
         this.Height = height;
         this.Speed = 5;
-        loadTextura(src); 
+        loadTextura(src);
     }
 
     public final void loadTextura(String src) {
@@ -108,7 +72,7 @@ public class Plane {
         if (textura != null) {
             return true;
         } else {
-            return false;   
+            return false;
         }
     }
 
@@ -117,31 +81,29 @@ public class Plane {
         if (isMoving) {
             this.posX += Speed * Math.sin(angle);
             this.posY += Speed * Math.cos(angle);
-            
-            checkFinish();
+
+            float distancia = (int) Math.sqrt((dstX - posX) * (dstX - posX) + (dstY - posY) * (dstY - posY));
+            System.out.println("Distance:" + distancia);
+
+            if (this.dstX < this.posX) {
+
+                if (distancia <= 5) {
+                    this.isMoving = false;
+                }
+            }
+            if(this.dstX > this.posX)
+            {
+                if(distancia <=40)
+                {
+                    this.isMoving = false;
+                }
+            }
+
         }
     }
 
-    public void checkFinish()
-    {
-        if(this.getPosY() <= dstY)
-        {
-            this.setIsMoving(false);
-        }
-    }
+    public void setDestination(int flag) {
 
-    public void setDestination(int x, int y) 
-    {
-
-        this.dstX = x;
-        this.dstY = y;
-        this.dx = dstX - posX;
-        this.dy = dstY - posY;
-        this.angle = (float) Math.atan2(dx, dy);
-    }
-        public void setDestination(int flag) 
-        {
-            
         this.dstX = coords[flag][0];
         this.dstY = coords[flag][1];
         this.dx = dstX - posX;
@@ -149,14 +111,15 @@ public class Plane {
         this.angle = (float) Math.atan2(dx, dy);
 
     }
-//Recebe  um valor int para identificar como ponto
-    public void setPosition(int flag)
-    {   
+
+    //Recebe  um valor int para identificar como ponto
+    public void setPosition(int flag) {
         //X ,Y
         this.setPosX(coords[flag][0]);
         this.setPosY(coords[flag][1]);
-        
+
     }
+
     public int getPosX() {
         return posX;
     }
@@ -206,4 +169,19 @@ public class Plane {
         this.isMoving = isMoving;
     }
 
+    public boolean isMoving()
+    {
+        return this.isMoving;
+    }
+
+    public int getDstX() {
+        return dstX;
+    }
+
+    public int getDstY() {
+        return dstY;
+    }
+    
+    
+    
 }
