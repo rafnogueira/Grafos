@@ -6,6 +6,11 @@
 package Orion;
 
 import Orion.layout.Grafos;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.LookAndFeel;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
@@ -15,9 +20,23 @@ public class main {
 
     public static void main(String[] args) 
     {
-        Grafos app = new Grafos();
-        app.setLocationRelativeTo(null);
-        app.setVisible(true);
+        
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            
+            Grafos app = new Grafos();
+            app.setLocationRelativeTo(null);
+            app.setVisible(true);
+            
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }
     

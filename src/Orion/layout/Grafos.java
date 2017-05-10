@@ -6,21 +6,33 @@
 
 package Orion.layout;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author rafael
  */
 public class Grafos extends javax.swing.JFrame {
 
-    /** Creates new form Grafos */
+    private jpMapa mapa;
+
+    public jpMapa getMapa() {
+        return mapa;
+    }
+
+    public void setMapa(jpMapa mapa) {
+        this.mapa = mapa;
+    }
+    
+    
     public Grafos() {
         initComponents();
         
-        jpMapa Mapa = new jpMapa();
-        Mapa.setSize(getWidth() , getHeight());
-        Mapa.setLocation(0,0);
+        mapa = new jpMapa();
+        mapa.setSize(getWidth() , getHeight());
+        mapa.setLocation(0,0);
         
-        jpPanel.add(Mapa);
+        jpPanel.add(mapa);
     }
 
     /** This method is called from within the constructor to
@@ -241,7 +253,14 @@ public class Grafos extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        
+        ArrayList<Plane.Pontos> pontos  = new ArrayList<>();
+        pontos.add(Plane.Pontos.MAN);
+        pontos.add(Plane.Pontos.CUI);
+        pontos.add(Plane.Pontos.CPG);
+        pontos.add(Plane.Pontos.RBP);
+        mapa.makePath(pontos);
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

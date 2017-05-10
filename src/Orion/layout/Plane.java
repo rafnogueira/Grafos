@@ -88,7 +88,7 @@ public class Plane {
             this.posY += Speed * Math.cos(this.angle);
 
             float distancia = (int) Math.sqrt((this.dstX - this.posX) * (this.dstX - this.posX) + (this.dstY - this.posY) * (this.dstY - this.posY));
-            System.out.println("Distance:" + distancia);
+//            System.out.println("Distance:" + distancia);
 
             if (distancia <= 5) {
                 this.isMoving = false;
@@ -97,7 +97,6 @@ public class Plane {
     }
 
     public void setDestination(int flag) {
-
         this.dstX = coords[flag][0];
         this.dstY = coords[flag][1];
 
@@ -171,5 +170,16 @@ public class Plane {
     public int getDstY() {
         return dstY;
     }
+    
+    public void setAngle(float angle)
+    {
+        this.angle = angle;
+    }
+    
+    public float getAngle()
+    {
+        return this.angle;
+    }
 
+    
 }
