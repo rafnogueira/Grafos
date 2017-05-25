@@ -161,11 +161,12 @@ public final class GrafosFrame extends javax.swing.JFrame {
 
         FLO.addAresta(CUR, 1, 2, 5);
         FLO.addAresta(BLU, 1, 1, 3);
-        FLO.addAresta(POA, 1, 6, 2);
         FLO.addAresta(RJO, 1, 12, 10);
+        FLO.addAresta(POA, 1, 6, 2);
 
-        POA.addAresta(BLU, 1, 7, 2);
+        
         POA.addAresta(FLO, 1, 6, 2);
+        POA.addAresta(BLU, 1, 7, 2);
 
         nos.add(MAN);
         nos.add(BEL);
