@@ -29,12 +29,12 @@ public final class jpMapa extends JPanel implements Runnable {
 
     private BufferedImage mapa = null;
     //private Plane deathstar = null;
-    private Plane deathstar = null;
+    private Plane plane = null;
     private Thread thread = null;
     private ArrayList<Plane.Pontos> pontos = null;
 
     private boolean threadRunning = false;
-    private final String objTexture = "./src/res/deathstar.png";
+    private final String objTexture = "./src/res/plane.png";
     private final String mapTexture = "./src/res/mapa.png";
 
     private boolean havePath;
@@ -42,7 +42,7 @@ public final class jpMapa extends JPanel implements Runnable {
     private String szInformation  = "";
     
     public jpMapa() {
-        deathstar = new Plane(40, 40, objTexture);
+        plane = new Plane(40, 40, objTexture);
         
         loadMap();
         repaint();
@@ -97,23 +97,21 @@ public final class jpMapa extends JPanel implements Runnable {
         plane.setColor(Color.RED);
         plane.drawImage(mapa, 0, 0, 700, 600, null);
 
-        if (deathstar.isloaded()) {
+        if (this.plane.isloaded()) {
 
-            plane.drawImage(deathstar.getTextura(), deathstar.getPosX(), deathstar.getPosY(), deathstar.getWidth(),
-                    deathstar.getHeight(), this);
+            plane.drawImage(this.plane.getTextura(), this.plane.getPosX(), this.plane.getPosY(), this.plane.getWidth(),
+                    this.plane.getHeight(), this);
 
-            if (deathstar.isMoving()) {
+            if (this.plane.isMoving()) {
                 //Se estiver se movendo  desenhar uma linha para o destino
                 Graphics2D g2d = (Graphics2D) g;
                 g2d.setStroke(new BasicStroke(5));
                 g2d.setColor(Color.MAGENTA);
-                g2d.draw(new Line2D.Float(deathstar.getPosX() + deathstar.getWidth() / 2,
-                        deathstar.getPosY() + deathstar.getHeight() / 2, deathstar.getDstX(), deathstar.getDstY()));
+                g2d.draw(new Line2D.Float(this.plane.getPosX() + this.plane.getWidth() / 2,
+                        this.plane.getPosY() + this.plane.getHeight() / 2, this.plane.getDstX(), this.plane.getDstY()));
                 
-                g2d.setFont(new Font("Helvetica", Font.PLAIN, 18));
-                
-                g2d.drawString(szInformation, 10, 400);
-                
+//                g2d.setFont(new Font("Helvetica", Font.PLAIN, 18));
+//                g2d.drawString(szInformation, 10, 400);
             }
         }
 
@@ -128,19 +126,19 @@ public final class jpMapa extends JPanel implements Runnable {
         while (!thread.isInterrupted()) {
             try {
                 for (int i = 0; i < pontos.size(); i++) {
-                    deathstar.setPosition(pontos.get(i).ordinal());
-                    deathstar.setDestination(pontos.get(i + 1).ordinal());
+                    plane.setPosition(pontos.get(i).ordinal());
+                    plane.setDestination(pontos.get(i + 1).ordinal());
                     boolean destination = false;
 
                     while (!destination) {
                         try {
 
                             thread.sleep(30);
-                            deathstar.setIsMoving(true);
-                            deathstar.Update();
+                            plane.setIsMoving(true);
+                            plane.Update();
                             repaint();
                             
-                            if (!deathstar.isMoving()) {
+                            if (!plane.isMoving()) {
                                 destination = true;
                                 thread.sleep(500);
                             }

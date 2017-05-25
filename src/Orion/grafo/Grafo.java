@@ -75,14 +75,12 @@ public final class Grafo {
         while(!naoVisitados.isEmpty())
         {
             verticeAtual = naoVisitados.get(0);
-            System.out.println("Vertice adquirido"+verticeAtual.getNome());
-            
-            
+            //Adquirindo vértice
+                        
             for(int i = 0; i < verticeAtual.getListAdj().size(); i++)
-            {
+            {//Verifica vizinhos
                 vizinho = verticeAtual.getListAdj().get(i).destino;
-                 System.out.println("VErificando vizinhos");
-
+                 
                 if(!vizinho.isVisitado())
                 {
 
