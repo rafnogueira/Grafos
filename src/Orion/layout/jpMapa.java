@@ -15,6 +15,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -23,7 +24,7 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author rafael
+ * @author Rafael Nogueira
  */
 public final class jpMapa extends JPanel implements Runnable {
 
@@ -32,18 +33,18 @@ public final class jpMapa extends JPanel implements Runnable {
     private Plane plane = null;
     private Thread thread = null;
     private ArrayList<Plane.Pontos> pontos = null;
-
+    private List<Integer> inPontos = null;
     private boolean threadRunning = false;
     private final String objTexture = "./src/res/plane.png";
     private final String mapTexture = "./src/res/mapa.png";
-
+    private String szCaminho = null;
     private boolean havePath;
-    
-    private String szInformation  = "";
-    
-    public jpMapa() {
-        plane = new Plane(40, 40, objTexture);
         
+    public jpMapa() {
+        pontos = new ArrayList<>();
+        inPontos = new ArrayList<>();
+        plane = new Plane(40, 40, objTexture);
+        szCaminho = "";
         loadMap();
         repaint();
 
@@ -62,14 +63,20 @@ public final class jpMapa extends JPanel implements Runnable {
 
     public void makePath(ArrayList<Plane.Pontos> p) {
 
+        if(havePath == true && threadRunning == true)
+        {
+            //JOptionPane.showMessageDialog(null, "Espero até a animação atual terminar!");
+        }else{
+            
         havePath = true;
         this.pontos = p;
         this.threadRunning = true;
         thread = new Thread(this);
         thread.start();
+        }
     }
-
-    public ArrayList<Plane.Pontos> getPontos() {
+    
+     public ArrayList<Plane.Pontos> getPontos() {
         return pontos;
     }
 
@@ -109,9 +116,9 @@ public final class jpMapa extends JPanel implements Runnable {
                 g2d.setColor(Color.MAGENTA);
                 g2d.draw(new Line2D.Float(this.plane.getPosX() + this.plane.getWidth() / 2,
                         this.plane.getPosY() + this.plane.getHeight() / 2, this.plane.getDstX(), this.plane.getDstY()));
-                
-//                g2d.setFont(new Font("Helvetica", Font.PLAIN, 18));
-//                g2d.drawString(szInformation, 10, 400);
+                g2d.setColor(Color.BLUE);
+                g2d.setFont(new Font("Arial", Font.PLAIN, 18));
+                g2d.drawString(szCaminho, 0, 50);
             }
         }
 
@@ -123,7 +130,7 @@ public final class jpMapa extends JPanel implements Runnable {
     public void run() {
         //thread de rendereização
 
-        while (!thread.isInterrupted()) {
+        while (true) {
             try {
                 for (int i = 0; i < pontos.size(); i++) {
                     plane.setPosition(pontos.get(i).ordinal());
@@ -133,7 +140,7 @@ public final class jpMapa extends JPanel implements Runnable {
                     while (!destination) {
                         try {
 
-                            thread.sleep(30);
+                            thread.sleep(20);
                             plane.setIsMoving(true);
                             plane.Update();
                             repaint();
@@ -146,23 +153,25 @@ public final class jpMapa extends JPanel implements Runnable {
                             Logger.getLogger(jpMapa.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
-                    
-                    this.szInformation += pontos.get(i).toString()+"\n";
-                    
+
                 }
             } catch (IndexOutOfBoundsException index) {
-                System.out.println("Erro de index do vetor minimizado" + index.getMessage());
+                //System.out.println("Erro de index do vetor minimizado" + index.getMessage());
             }
             System.out.println("Thread encerrada!");
+            this.havePath = false;
+            threadRunning = false;
             thread.interrupt();
+            break;
         }
     }
 
-    public String getSzInformation() {
-        return szInformation;
+    public String getSzCaminho() {
+        return szCaminho;
     }
 
-    public void setSzInformation(String szInformation) {
-        this.szInformation = szInformation;
+    public void setSzCaminho(String szCaminho) {
+        this.szCaminho = szCaminho;
     }
+
 }

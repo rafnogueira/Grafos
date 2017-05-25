@@ -48,7 +48,7 @@ public final class Grafo {
         this.nos = nos;
     }
 
-    public List<No> encontrarCaminho(Grafo g ,No n1 , No n2)
+    public List<No> encontrarCaminho(No n1 , No n2)
     {
         List<No> menorCaminho  = new ArrayList<No>();
         List<No> naoVisitados = new ArrayList<No>();
@@ -59,15 +59,15 @@ public final class Grafo {
 
         menorCaminho.add(n1);
 
-        for(int i = 0; i < g.nos.size(); i++)
+        for(int i = 0; i < this.nos.size(); i++)
         {
-            if(g.nos.get(i).getNome().equals(n1.getNome()))
+            if(this.nos.get(i).getNome().equals(n1.getNome()))
             {
-                g.nos.get(i).setDistancia(0);
+                this.nos.get(i).setDistancia(0);
             }else{
-                g.nos.get(i).setDistancia(Integer.MAX_VALUE);
+                this.nos.get(i).setDistancia(Integer.MAX_VALUE);
             }
-            naoVisitados.add(g.nos.get(i));
+            naoVisitados.add(this.nos.get(i));
         }
         
         Collections.sort(naoVisitados);

@@ -7,6 +7,8 @@ package Orion.layout;
 
 import Orion.grafo.Grafo;
 import Orion.grafo.No;
+import Orion.layout.Plane.Pontos;
+
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -17,31 +19,30 @@ import javax.swing.JOptionPane;
  */
 public final class GrafosFrame extends javax.swing.JFrame {
 
-    private jpMapa mapa;
-    private Grafo grafo;
-    private List<No> nos; //Nós que serão mandados para o grafo
-
+    private jpMapa mapa = null;
+    private Grafo grafo = null;
+    private List<No> nos = null; //Nós que serão mandados para o grafo
     //Nós
-    No MAN = new No("MAN", 0);
-    No BEL = new No("BEL", 1);
-    No NTL = new No("NTL", 2);
-    No REC = new No("REC", 3);
-    No SLV = new No("SLV", 4);
-    No BSB = new No("BSB", 5);
-    No CUI = new No("CUI", 6);
-    No CPG = new No("CPG", 7);
-    No BAU = new No("BAU", 8);
-    No RBP = new No("RBP", 9);
-    No CMP = new No("CMP", 10);
-    No BHO = new No("BHO", 11);
-    No LON = new No("LON", 12);
-    No SPO = new No("SPO", 13);
-    No RJO = new No("RJO", 14);
-    No SJC = new No("SJC", 15);
-    No CUR = new No("CUR", 16);
-    No BLU = new No("BLU", 17);
-    No FLO = new No("FLO", 18);
-    No POA = new No("POA", 19);
+    No MAN;
+    No BEL;
+    No NTL;
+    No REC;
+    No SLV;
+    No BSB;
+    No CUI;
+    No CPG;
+    No BAU;
+    No RBP;
+    No CMP;
+    No BHO;
+    No LON;
+    No SPO;
+    No RJO;
+    No SJC;
+    No CUR;
+    No BLU;
+    No FLO;
+    No POA;
 
     public GrafosFrame() {
         initComponents();
@@ -54,7 +55,6 @@ public final class GrafosFrame extends javax.swing.JFrame {
     }
 
     public void carregarGrafo() {
-
         grafo = new Grafo();
         nos = new ArrayList<>();
         //Nó -> Nome do Nö ,  index dentro do vetor;
@@ -62,45 +62,27 @@ public final class GrafosFrame extends javax.swing.JFrame {
         //Criar ligações // nós destino,métrica a ,b,c
         //  nA.addAresta(nB, 1);
         //Adiciona nós com suas ligações no grafo
-        
-        recriarArestas();
-        nos.add(MAN);
-        nos.add(BEL);
-        nos.add(NTL);
-        nos.add(REC);
-        nos.add(SLV);
-        nos.add(BSB);
-        nos.add(CUI);
-        nos.add(CPG);
-        nos.add(BAU);
-        nos.add(RBP);
-        nos.add(CMP);
-        nos.add(BHO);
-        nos.add(LON);
-        nos.add(SPO);
-        nos.add(RJO);
-        nos.add(SJC);
-        nos.add(CUR);
-        nos.add(BLU);
-        nos.add(FLO);     
-        
-        grafo.updateNoList(nos);
-        
-        // Testar
-        List<No> caminho = grafo.encontrarCaminho(grafo, transformSelectionSrcNo(), transformSelectionDstNo());
-        mostrarCaminhos(caminho);
-    }
-    
-    public void calcularDistancia()
-    {
-        carregarGrafo();
-    }
-    
-    public void calcularCusto()
-    {
-        carregarGrafo();
-    }
-    public void recriarArestas() {
+        MAN = new No("MAN", 0);
+        BEL = new No("BEL", 1);
+        NTL = new No("NTL", 2);
+        REC = new No("REC", 3);
+        SLV = new No("SLV", 4);
+        BSB = new No("BSB", 5);
+        CUI = new No("CUI", 6);
+        CPG = new No("CPG", 7);
+        BAU = new No("BAU", 8);
+        RBP = new No("RBP", 9);
+        CMP = new No("CMP", 10);
+        BHO = new No("BHO", 11);
+        LON = new No("LON", 12);
+        SPO = new No("SPO", 13);
+        RJO = new No("RJO", 14);
+        SJC = new No("SJC", 15);
+        CUR = new No("CUR", 16);
+        BLU = new No("BLU", 17);
+        FLO = new No("FLO", 18);
+        POA = new No("POA", 19);
+
         MAN.addAresta(BEL, 1, 18, 2);
         MAN.addAresta(BSB, 1, 22, 6);
         MAN.addAresta(CUI, 1, 20, 3);
@@ -184,35 +166,69 @@ public final class GrafosFrame extends javax.swing.JFrame {
 
         POA.addAresta(BLU, 1, 7, 2);
         POA.addAresta(FLO, 1, 6, 2);
+
+        nos.add(MAN);
+        nos.add(BEL);
+        nos.add(NTL);
+        nos.add(REC);
+        nos.add(SLV);
+        nos.add(BSB);
+        nos.add(CUI);
+        nos.add(CPG);
+        nos.add(BAU);
+        nos.add(RBP);
+        nos.add(CMP);
+        nos.add(BHO);
+        nos.add(LON);
+        nos.add(SPO);
+        nos.add(RJO);
+        nos.add(SJC);
+        nos.add(CUR);
+        nos.add(BLU);
+        nos.add(FLO);
+        
+        grafo.updateNoList(nos);
+        
     }
-    
+
+    public void calcularDistancia() {
+        carregarGrafo();
+        List<No> caminho = grafo.encontrarCaminho(transformSelectionSrcNo(), transformSelectionDstNo());
+
+        criarAnimacao(caminho);
+    }
+
+    public void calcularCusto() {
+        carregarGrafo();
+        List<No> caminho = grafo.encontrarCaminho(transformSelectionSrcNo(), transformSelectionDstNo());
+        criarAnimacao(caminho);
+    }
+
     // ; )  
-    public No transformSelectionDstNo()
-    {
-         return   nos.get(this.cbDestino.getSelectedIndex());   
+    public No transformSelectionDstNo() {
+        return nos.get(this.cbDestino.getSelectedIndex());
     }
-    
+
     // :)  
-    public No transformSelectionSrcNo()
-    {
-         return   nos.get(this.cbInicio.getSelectedIndex());   
+    public No transformSelectionSrcNo() {
+        return nos.get(this.cbInicio.getSelectedIndex());
     }
-    
-    //Tem que recriar o grafo toda vez que desativar ou ativar um nó
-    public void mostrarCaminhos(List<No> caminho) {
-        No tmp = null;
+
+    public void criarAnimacao(List<No> caminho) {
+        String szCaminho = "";
+        No n_final = null;
+        ArrayList<Pontos> pontos = new ArrayList<>();
         for (No n : caminho) {
-            System.out.println("Nó :" + n.getNome() + "Distância Percorrida" + n.getDistancia());
-            tmp = n;
+            pontos.add(Pontos.valueOf(n.getNome()));
+            szCaminho += n.getNome()+" Peso :"+n.getDistancia();
+            n_final = n;
         }
-        JOptionPane.showMessageDialog(null, "Total Percorrido" + tmp.getDistancia()+"Hoops:"+caminho.size());
 
-    }
+        mapa.setSzCaminho(szCaminho);
+        mapa.makePath(pontos);
+        
+        //  mapa.setSzInformation(this.szCaminho);
 
-    public void recriarGrafo() {
-        for (No n : this.nos) {
-
-        }
     }
 
     public jpMapa getMapa() {
@@ -454,20 +470,19 @@ public final class GrafosFrame extends javax.swing.JFrame {
     private void btnCustoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCustoActionPerformed
 
         calcularCusto();
-        
-        ArrayList<Plane.Pontos> pontos = new ArrayList<>();
-        pontos.add(Plane.Pontos.MAN);
-        pontos.add(Plane.Pontos.CUI);
-        pontos.add(Plane.Pontos.CPG);
-        pontos.add(Plane.Pontos.RBP);
-        pontos.add(Plane.Pontos.MAN);
-        mapa.makePath(pontos);
-        
-        
+
+        // ArrayList<Plane.Pontos> pontos = new ArrayList<>();
+        // pontos.add(Plane.Pontos.MAN);
+        // pontos.add(Plane.Pontos.CUI);
+        // pontos.add(Plane.Pontos.CPG);
+        // pontos.add(Plane.Pontos.RBP);
+        // pontos.add(Plane.Pontos.MAN);
+        // mapa.makePath(pontos);
+
     }//GEN-LAST:event_btnCustoActionPerformed
 
     private void btnDistanciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDistanciaActionPerformed
-            calcularDistancia();
+        calcularDistancia();
     }//GEN-LAST:event_btnDistanciaActionPerformed
 
     private void btnDesabilitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesabilitarActionPerformed
@@ -479,7 +494,7 @@ public final class GrafosFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnHabilitarActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        
+
         Tabela tab = new Tabela();
         tab.setVisible(true);
         //Thread th_tab = new Thread(new Tabela());
