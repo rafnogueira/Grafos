@@ -28,7 +28,7 @@ public class Aresta
         this.pesoMetricaB = b;
         this.pesoMetricaC = c;        
         
-        this.peso = b;
+        this.peso = c;
         
     }
     public Aresta(No src ,No dst, int peso)

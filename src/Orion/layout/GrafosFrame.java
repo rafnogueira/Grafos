@@ -187,6 +187,7 @@ public final class GrafosFrame extends javax.swing.JFrame {
         nos.add(CUR);
         nos.add(BLU);
         nos.add(FLO);
+        nos.add(POA);
         
         grafo.updateNoList(nos);
         
