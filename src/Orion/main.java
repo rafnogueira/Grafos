@@ -5,7 +5,7 @@
  */
 package Orion;
 
-import Orion.layout.Grafos;
+import Orion.layout.GrafosFrame;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.LookAndFeel;
@@ -24,7 +24,7 @@ public class main {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             
-            Grafos app = new Grafos();
+            GrafosFrame app = new GrafosFrame();
             app.setLocationRelativeTo(null);
             app.setVisible(true);
             

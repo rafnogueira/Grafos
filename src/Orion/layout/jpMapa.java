@@ -7,10 +7,9 @@ package Orion.layout;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -32,18 +31,19 @@ public final class jpMapa extends JPanel implements Runnable {
     //private Plane deathstar = null;
     private Plane deathstar = null;
     private Thread thread = null;
+    private ArrayList<Plane.Pontos> pontos = null;
 
-    private ArrayList<Plane.Pontos> pontos;
-
-    private boolean threadRunning;
+    private boolean threadRunning = false;
     private final String objTexture = "./src/res/deathstar.png";
     private final String mapTexture = "./src/res/mapa.png";
 
     private boolean havePath;
-
+    
+    private String szInformation  = "";
+    
     public jpMapa() {
         deathstar = new Plane(40, 40, objTexture);
-
+        
         loadMap();
         repaint();
 
@@ -53,7 +53,7 @@ public final class jpMapa extends JPanel implements Runnable {
         try {
             mapa = ImageIO.read(new File(mapTexture));
         } catch (IOException ex) {
-            Logger.getLogger(Grafos.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GrafosFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (mapa == null) {
             JOptionPane.showMessageDialog(null, "Imagem não carregada!");
@@ -109,45 +109,62 @@ public final class jpMapa extends JPanel implements Runnable {
                 g2d.setColor(Color.MAGENTA);
                 g2d.draw(new Line2D.Float(deathstar.getPosX() + deathstar.getWidth() / 2,
                         deathstar.getPosY() + deathstar.getHeight() / 2, deathstar.getDstX(), deathstar.getDstY()));
-
+                
+                g2d.setFont(new Font("Helvetica", Font.PLAIN, 18));
+                
+                g2d.drawString(szInformation, 10, 400);
+                
             }
         }
 
     }
+    
+    
 
     @Override
     public void run() {
         //thread de rendereização
 
         while (!thread.isInterrupted()) {
-            for(int i=0; i<pontos.size() ; i++)
-            {
-                deathstar.setPosition(pontos.get(i).ordinal());
-                deathstar.setDestination(pontos.get(i+1).ordinal());
-                boolean destination = false;
+            try {
+                for (int i = 0; i < pontos.size(); i++) {
+                    deathstar.setPosition(pontos.get(i).ordinal());
+                    deathstar.setDestination(pontos.get(i + 1).ordinal());
+                    boolean destination = false;
 
-                while (!destination) {
-                    try {
+                    while (!destination) {
+                        try {
 
-                        thread.sleep(30);
-                        deathstar.setIsMoving(true);
-
-                        deathstar.Update();
-                        repaint();
-                        if (!deathstar.isMoving()) {
-                            destination = true;
+                            thread.sleep(30);
+                            deathstar.setIsMoving(true);
+                            deathstar.Update();
+                            repaint();
                             
-                            thread.sleep(500);
+                            if (!deathstar.isMoving()) {
+                                destination = true;
+                                thread.sleep(500);
+                            }
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(jpMapa.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(jpMapa.class.getName()).log(Level.SEVERE, null, ex);
                     }
+                    
+                    this.szInformation += pontos.get(i).toString()+"\n";
+                    
                 }
-
+            } catch (IndexOutOfBoundsException index) {
+                System.out.println("Erro de index do vetor minimizado" + index.getMessage());
             }
-
             System.out.println("Thread encerrada!");
             thread.interrupt();
         }
+    }
+
+    public String getSzInformation() {
+        return szInformation;
+    }
+
+    public void setSzInformation(String szInformation) {
+        this.szInformation = szInformation;
     }
 }

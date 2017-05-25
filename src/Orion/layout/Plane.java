@@ -5,7 +5,6 @@
  */
 package Orion.layout;
 
-import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -96,6 +95,8 @@ public class Plane {
         }
     }
 
+    
+    
     public void setDestination(int flag) {
         this.dstX = coords[flag][0];
         this.dstY = coords[flag][1];
