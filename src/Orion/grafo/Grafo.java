@@ -48,7 +48,7 @@ public final class Grafo {
         this.nos = nos;
     }
 
-    public List<No> encontrarCaminho(No n1 , No n2)
+    public List<No> encontrarCaminhoMetricaB(No n1 , No n2)
     {
         List<No> menorCaminho  = new ArrayList<No>();
         List<No> naoVisitados = new ArrayList<No>();
@@ -84,9 +84,9 @@ public final class Grafo {
                 if(!vizinho.isVisitado())
                 {
 
-                    if(vizinho.getDistancia() > ( verticeAtual.getDistancia()+ verticeAtual.getListAdj().get(i).peso ))
+                    if(vizinho.getDistancia() > ( verticeAtual.getDistancia()+verticeAtual.getListAdj().get(i).pesoMetricaB ))
                     {
-                        vizinho.setDistancia(verticeAtual.getDistancia() + verticeAtual.getListAdj().get(i).peso);
+                        vizinho.setDistancia(verticeAtual.getDistancia()+verticeAtual.getListAdj().get(i).pesoMetricaB);
                         vizinho.setAnterior(verticeAtual);
 
                         if(vizinho == n2)
@@ -112,12 +112,81 @@ public final class Grafo {
             verticeAtual.visitado = true;
             naoVisitados.remove(verticeAtual);
             Collections.sort(naoVisitados);
-            
         }
         
         return menorCaminho;
         
     }
     
+    
+    public List<No> encontrarCaminhoMetricaC(No n1 , No n2)
+    {
+        List<No> menorCaminho  = new ArrayList<No>();
+        List<No> naoVisitados = new ArrayList<No>();
+
+        No verticeCaminho  = new No();
+        No verticeAtual  = new No();
+        No vizinho  = new No();
+
+        menorCaminho.add(n1);
+
+        for(int i = 0; i < this.nos.size(); i++)
+        {
+            if(this.nos.get(i).getNome().equals(n1.getNome()))
+            {
+                this.nos.get(i).setDistancia(0);
+            }else{
+                this.nos.get(i).setDistancia(Integer.MAX_VALUE);
+            }
+            naoVisitados.add(this.nos.get(i));
+        }
+        
+        Collections.sort(naoVisitados);
+        
+        while(!naoVisitados.isEmpty())
+        {
+            verticeAtual = naoVisitados.get(0);
+            //Adquirindo vértice
+                        
+            for(int i = 0; i < verticeAtual.getListAdj().size(); i++)
+            {//Verifica vizinhos
+                vizinho = verticeAtual.getListAdj().get(i).destino;
+                 
+                if(!vizinho.isVisitado())
+                {
+
+                    if(vizinho.getDistancia() > ( verticeAtual.getDistancia()+verticeAtual.getListAdj().get(i).pesoMetricaC ))
+                    {
+                        vizinho.setDistancia(verticeAtual.getDistancia()+verticeAtual.getListAdj().get(i).pesoMetricaC);
+                        vizinho.setAnterior(verticeAtual);
+
+                        if(vizinho == n2)
+                        {
+                            menorCaminho.clear();
+                            verticeCaminho = vizinho;
+                            menorCaminho.add(vizinho);
+
+                            while(verticeCaminho.getAnterior() != null)
+                            {
+                                menorCaminho.add(verticeCaminho.getAnterior());
+                                verticeCaminho = verticeCaminho.getAnterior();
+                            }
+                            Collections.sort(menorCaminho);
+                        }
+
+                    }
+
+                }
+            }
+            
+            
+            verticeAtual.visitado = true;
+            naoVisitados.remove(verticeAtual);
+            Collections.sort(naoVisitados);
+        }
+        
+        return menorCaminho;
+        
+    }
 
 }

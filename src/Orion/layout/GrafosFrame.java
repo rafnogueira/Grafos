@@ -22,6 +22,7 @@ public final class GrafosFrame extends javax.swing.JFrame {
     private jpMapa mapa = null;
     private Grafo grafo = null;
     private List<No> nos = null; //Nós que serão mandados para o grafo
+    private int NosDesabilitados[];
     //Nós
     No MAN;
     No BEL;
@@ -51,10 +52,18 @@ public final class GrafosFrame extends javax.swing.JFrame {
         mapa.setSize(getWidth(), getHeight());
         mapa.setLocation(0, 0);
         jpPanel.add(mapa);
-
+        
+          NosDesabilitados = new int[20];
+        recarregarGrafo();
+        
+      //  NosDesabilitados = new int[nos.size()];
+        for(int i = 0; i < NosDesabilitados.length; i++)
+        {
+            NosDesabilitados[i] = 0;
+        }
     }
 
-    public void carregarGrafo() {
+    public void recarregarGrafo() {
         grafo = new Grafo();
         nos = new ArrayList<>();
         //Nó -> Nome do Nö ,  index dentro do vetor;
@@ -164,10 +173,9 @@ public final class GrafosFrame extends javax.swing.JFrame {
         FLO.addAresta(RJO, 1, 12, 10);
         FLO.addAresta(POA, 1, 6, 2);
 
-        
         POA.addAresta(FLO, 1, 6, 2);
         POA.addAresta(BLU, 1, 7, 2);
-
+        
         nos.add(MAN);
         nos.add(BEL);
         nos.add(NTL);
@@ -188,22 +196,37 @@ public final class GrafosFrame extends javax.swing.JFrame {
         nos.add(BLU);
         nos.add(FLO);
         nos.add(POA);
+
+        
+        for(int i = 0 ; i < nos.size() ; i++)
+        {
+            if(NosDesabilitados[i] == 1)
+            {
+                nos.remove(i);
+            }
+            
+        }
+        
         
         grafo.updateNoList(nos);
-        
+
     }
 
     public void calcularDistancia() {
-        carregarGrafo();
-        List<No> caminho = grafo.encontrarCaminho(transformSelectionSrcNo(), transformSelectionDstNo());
 
-        criarAnimacao(caminho);
+        recarregarGrafo();
+        List<No> caminho = grafo.encontrarCaminhoMetricaB(transformSelectionSrcNo(), transformSelectionDstNo());
+
+        criarAnimacao(caminho ,1);
     }
 
     public void calcularCusto() {
-        carregarGrafo();
-        List<No> caminho = grafo.encontrarCaminho(transformSelectionSrcNo(), transformSelectionDstNo());
-        criarAnimacao(caminho);
+        // 2 para fazer rota pelo custo
+
+        recarregarGrafo();
+        List<No> caminho = grafo.encontrarCaminhoMetricaC(transformSelectionSrcNo(), transformSelectionDstNo());
+        criarAnimacao(caminho, 2);
+
     }
 
     // ; )  
@@ -216,23 +239,38 @@ public final class GrafosFrame extends javax.swing.JFrame {
         return nos.get(this.cbInicio.getSelectedIndex());
     }
 
-    public void criarAnimacao(List<No> caminho) {
-        String szCaminho = "";
+    public void criarAnimacao(List<No> caminho, int tipo) {
+        String szCaminho = "<html>";
         No n_final = null;
         ArrayList<Pontos> pontos = new ArrayList<>();
         for (No n : caminho) {
             pontos.add(Pontos.valueOf(n.getNome()));
-            szCaminho += n.getNome()+" Peso :"+n.getDistancia();
+
+            if (tipo == 1) {
+                szCaminho += n.getNome() + " Distância:" + n.getDistancia() + "<br>";
+            } else {
+                szCaminho += n.getNome() + "Custo:" + n.getDistancia() + "<br>";
+
+            }
+
             n_final = n;
         }
 
+        szCaminho += "</html>";
+
         mapa.setSzCaminho(szCaminho);
         mapa.makePath(pontos);
-        
+
         //  mapa.setSzInformation(this.szCaminho);
-
     }
-
+    public void desabilitarNo()
+    {
+        NosDesabilitados[cbHabilitado.getSelectedIndex()] = 1;
+    }
+    public void habilitarNo()
+    {
+        NosDesabilitados[cbHabilitado.getSelectedIndex()] = 0;
+    }
     public jpMapa getMapa() {
         return mapa;
     }
@@ -258,8 +296,6 @@ public final class GrafosFrame extends javax.swing.JFrame {
         btnDesabilitar = new javax.swing.JButton();
         btnHabilitar = new javax.swing.JButton();
         cbHabilitado = new javax.swing.JComboBox<>();
-        jLabel6 = new javax.swing.JLabel();
-        cbDesabilitado = new javax.swing.JComboBox<>();
         jMenuBar1 = new javax.swing.JMenuBar();
         jtMenuSobre = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -365,25 +401,15 @@ public final class GrafosFrame extends javax.swing.JFrame {
 
         cbHabilitado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "MAN", "BEL", "NTL", "REC", "SLV", "BSB", "CUI", "CPG", "BAU", "RBP", "CMP", "BHO", "LON", "SPO", "RJO", "SJC", "CUR", "BLU", "FLO", "POA" }));
 
-        jLabel6.setText("Desabilitados:");
-
-        cbDesabilitado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "MAN", "BEL", "NTL", "REC", "SLV", "BSB", "CUI", "CPG", "BAU", "RBP", "CMP", "BHO", "LON", "SPO", "RJO", "SJC", "CUR", "BLU", "FLO", "POA" }));
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(cbHabilitado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cbDesabilitado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(14, 14, 14)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(cbHabilitado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnHabilitar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -392,17 +418,17 @@ public final class GrafosFrame extends javax.swing.JFrame {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnDesabilitar)
-                    .addComponent(cbHabilitado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(cbDesabilitado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnHabilitar))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(btnDesabilitar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnHabilitar))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cbHabilitado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -473,14 +499,6 @@ public final class GrafosFrame extends javax.swing.JFrame {
 
         calcularCusto();
 
-        // ArrayList<Plane.Pontos> pontos = new ArrayList<>();
-        // pontos.add(Plane.Pontos.MAN);
-        // pontos.add(Plane.Pontos.CUI);
-        // pontos.add(Plane.Pontos.CPG);
-        // pontos.add(Plane.Pontos.RBP);
-        // pontos.add(Plane.Pontos.MAN);
-        // mapa.makePath(pontos);
-
     }//GEN-LAST:event_btnCustoActionPerformed
 
     private void btnDistanciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDistanciaActionPerformed
@@ -488,11 +506,13 @@ public final class GrafosFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDistanciaActionPerformed
 
     private void btnDesabilitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesabilitarActionPerformed
-        // TODO add your handling code here:
+        desabilitarNo();
     }//GEN-LAST:event_btnDesabilitarActionPerformed
 
+    
     private void btnHabilitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHabilitarActionPerformed
         // TODO add your handling code here:
+        habilitarNo();
     }//GEN-LAST:event_btnHabilitarActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
@@ -544,14 +564,12 @@ public final class GrafosFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnDesabilitar;
     private javax.swing.JButton btnDistancia;
     private javax.swing.JButton btnHabilitar;
-    private javax.swing.JComboBox<String> cbDesabilitado;
     private javax.swing.JComboBox<String> cbDestino;
     private javax.swing.JComboBox<String> cbHabilitado;
     private javax.swing.JComboBox<String> cbInicio;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;

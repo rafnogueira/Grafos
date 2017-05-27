@@ -17,7 +17,6 @@ public class Aresta
     int pesoMetricaB;
     int pesoMetricaC;
     
-    int peso;
     No destino;
     No origem;
     public Aresta(No src ,No dst, int a,int b,int c)
@@ -28,14 +27,12 @@ public class Aresta
         this.pesoMetricaB = b;
         this.pesoMetricaC = c;        
         
-        this.peso = c;
         
     }
     public Aresta(No src ,No dst, int peso)
     {
         this.origem = src;
         this.destino = dst;
-        this.peso = peso;
     }    
 
 }

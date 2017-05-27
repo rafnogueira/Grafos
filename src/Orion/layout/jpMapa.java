@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -39,12 +40,23 @@ public final class jpMapa extends JPanel implements Runnable {
     private final String mapTexture = "./src/res/mapa.png";
     private String szCaminho = null;
     private boolean havePath;
-        
+    
+    private JLabel lblCaminho = null;
+    
     public jpMapa() {
+        
         pontos = new ArrayList<>();
         inPontos = new ArrayList<>();
         plane = new Plane(40, 40, objTexture);
         szCaminho = "";
+        
+        lblCaminho = new JLabel("");       
+        setLayout(null);
+        lblCaminho.setLocation(0, 50);
+        lblCaminho.setSize(300, 800);
+        this.add(lblCaminho);
+        
+        
         loadMap();
         repaint();
 
@@ -116,9 +128,6 @@ public final class jpMapa extends JPanel implements Runnable {
                 g2d.setColor(Color.MAGENTA);
                 g2d.draw(new Line2D.Float(this.plane.getPosX() + this.plane.getWidth() / 2,
                         this.plane.getPosY() + this.plane.getHeight() / 2, this.plane.getDstX(), this.plane.getDstY()));
-                g2d.setColor(Color.BLUE);
-                g2d.setFont(new Font("Arial", Font.PLAIN, 18));
-                g2d.drawString(szCaminho, 0, 50);
             }
         }
 
@@ -131,6 +140,7 @@ public final class jpMapa extends JPanel implements Runnable {
         //thread de rendereização
 
         while (true) {
+            lblCaminho.setText(szCaminho);
             try {
                 for (int i = 0; i < pontos.size(); i++) {
                     plane.setPosition(pontos.get(i).ordinal());
