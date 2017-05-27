@@ -22,7 +22,7 @@ public final class GrafosFrame extends javax.swing.JFrame {
     private jpMapa mapa = null;
     private Grafo grafo = null;
     private List<No> nos = null; //Nós que serão mandados para o grafo
-    private int NosDesabilitados[];
+    private final int NosDesabilitados[];
     //Nós
     No MAN;
     No BEL;
@@ -53,7 +53,7 @@ public final class GrafosFrame extends javax.swing.JFrame {
         mapa.setLocation(0, 0);
         jpPanel.add(mapa);
         
-          NosDesabilitados = new int[20];
+        NosDesabilitados = new int[20];
         recarregarGrafo();
         
       //  NosDesabilitados = new int[nos.size()];
@@ -202,7 +202,7 @@ public final class GrafosFrame extends javax.swing.JFrame {
         {
             if(NosDesabilitados[i] == 1)
             {
-                nos.remove(i);
+                nos.get(i).desabilitar();
             }
             
         }
@@ -241,15 +241,19 @@ public final class GrafosFrame extends javax.swing.JFrame {
 
     public void criarAnimacao(List<No> caminho, int tipo) {
         String szCaminho = "<html>";
+        int hoops = 0 ;
         No n_final = null;
         ArrayList<Pontos> pontos = new ArrayList<>();
-        for (No n : caminho) {
+        
+        for (No n : caminho) 
+        {
+           
             pontos.add(Pontos.valueOf(n.getNome()));
-
+            hoops ++;
             if (tipo == 1) {
-                szCaminho += n.getNome() + " Distância:" + n.getDistancia() + "<br>";
+                szCaminho += " " +  n.getNome() + " Distância: " + n.getDistancia() + "  Hoops: "+hoops+ "<br>";
             } else {
-                szCaminho += n.getNome() + "Custo:" + n.getDistancia() + "<br>";
+                szCaminho += " " + n.getNome() + " Custo: " + n.getDistancia() +"  Hoops: "+hoops+  "<br>";
 
             }
 

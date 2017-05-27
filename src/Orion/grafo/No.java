@@ -72,7 +72,13 @@ public class No implements Comparable<No>{
     }
     
     @Override
-    public int compareTo(No no) {
+    public int compareTo(No no) 
+    {
+        if(!this.ativo)
+        {
+            this.distancia =  Integer.MAX_VALUE;
+        }
+
         if(this.distancia < no.distancia){
             return -1;
         }else if (this.distancia  == no.distancia){
