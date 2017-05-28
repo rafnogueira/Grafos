@@ -36,8 +36,8 @@ public final class jpMapa extends JPanel implements Runnable {
     private ArrayList<Plane.Pontos> pontos = null;
     private List<Integer> inPontos = null;
     private boolean threadRunning = false;
-    private final String objTexture = "./src/res/plane.png";
-    private final String mapTexture = "./src/res/mapa.png";
+    private final String objTexture = "resources/plane.png";
+    private final String mapTexture = "resources/mapa.png";
     private String szCaminho = null;
     private boolean havePath;
     
@@ -64,7 +64,7 @@ public final class jpMapa extends JPanel implements Runnable {
 
     public void loadMap() {
         try {
-            mapa = ImageIO.read(new File(mapTexture));
+            mapa = ImageIO.read(getClass().getResource(mapTexture));
         } catch (IOException ex) {
             Logger.getLogger(GrafosFrame.class.getName()).log(Level.SEVERE, null, ex);
         }

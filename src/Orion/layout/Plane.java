@@ -56,7 +56,11 @@ public class Plane {
 
     public final void loadTextura(String src) {
         try {
-            textura = ImageIO.read(new File(src));
+            
+            textura = ImageIO.read(getClass().getResource(src));
+            
+            //textura = ImageIO.read(new File(src));
+            
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }

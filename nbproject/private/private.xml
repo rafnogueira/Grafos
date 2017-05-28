@@ -5,9 +5,10 @@
         <group>
             <file>file:/Users/rafael/Projects/Netbeans/Grafos/src/Orion/layout/GrafosFrame.java</file>
             <file>file:/Users/rafael/Projects/Netbeans/Grafos/src/Orion/layout/jpMapa.java</file>
-            <file>file:/Users/rafael/Projects/Netbeans/Grafos/src/Orion/grafo/Aresta.java</file>
             <file>file:/Users/rafael/Projects/Netbeans/Grafos/src/Orion/grafo/No.java</file>
+            <file>file:/Users/rafael/Projects/Netbeans/Grafos/src/Orion/layout/Tabela.java</file>
             <file>file:/Users/rafael/Projects/Netbeans/Grafos/src/Orion/grafo/Grafo.java</file>
+            <file>file:/Users/rafael/Projects/Netbeans/Grafos/src/Orion/layout/Plane.java</file>
         </group>
     </open-files>
 </project-private>
